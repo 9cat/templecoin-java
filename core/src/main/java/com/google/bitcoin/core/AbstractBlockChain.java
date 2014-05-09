@@ -307,7 +307,7 @@ public abstract class AbstractBlockChain {
      * @throws BlockStoreException if the block store had an underlying error.
      * @return The full set of all changes made to the set of open transaction outputs.
      */
-    protected abstract TransactionOutputChanges connectTransactions(int height, Block block) throws VerificationException, BlockStoreException;
+    protected abstract TransactionOutputChanges connectTransactions(int height, Block block,StoredBlock storedBlock) throws VerificationException, BlockStoreException;
 
     /**
      * Load newBlock from BlockStore and connect its transactions, returning changes to the set of unspent transactions.
@@ -437,7 +437,7 @@ public abstract class AbstractBlockChain {
             // This block connects to the best known block, it is a normal continuation of the system.
             TransactionOutputChanges txOutChanges = null;
             if (shouldVerifyTransactions())
-                txOutChanges = connectTransactions(storedPrev.getHeight() + 1, block);
+                txOutChanges = connectTransactions(storedPrev.getHeight() + 1, block,storedPrev);
             StoredBlock newStoredBlock = addToBlockStore(storedPrev,
                     block.transactions == null ? block : block.cloneAsHeader(), txOutChanges);
             setChainHead(newStoredBlock);
@@ -634,7 +634,7 @@ public abstract class AbstractBlockChain {
                 if (cursor != newChainHead || block == null)
                     txOutChanges = connectTransactions(cursor);
                 else
-                    txOutChanges = connectTransactions(newChainHead.getHeight(), block);
+                    txOutChanges = connectTransactions(newChainHead.getHeight(), block,storedPrev);
                 storedNewHead = addToBlockStore(storedNewHead, cursor.getHeader(), txOutChanges);
             }
         } else {

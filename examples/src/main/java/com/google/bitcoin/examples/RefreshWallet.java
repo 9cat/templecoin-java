@@ -17,6 +17,7 @@
 package com.google.bitcoin.examples;
 
 import com.google.bitcoin.core.*;
+import com.google.bitcoin.core.Wallet.SendRequest;
 import com.google.bitcoin.params.MainNetParams;
 import com.google.bitcoin.params.TestNet3Params;
 import com.google.bitcoin.store.BlockStore;
@@ -78,6 +79,10 @@ public class RefreshWallet {
 		peerGroup.downloadBlockChain();
 		peerGroup.stop();
 		//wallet.saveToFile(file);
+		
+		
+		wallet.get
+		//wallet.sendCoins(SendRequest.to(destination, value).);
 		System.out.println("\nDone!\n");
 		System.out.println(wallet.toString());
 	}

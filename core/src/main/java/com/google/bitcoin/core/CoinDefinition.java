@@ -223,53 +223,18 @@ public class CoinDefinition {
 																// LoadBlockIndex
 
 	// main.cpp GetBlockValue(height, fee)
-	public static BigInteger GetBlockReward(int height) {
-		if (height == 0)
+	public static BigInteger GetBlockReward(long diffTime, long nBits,
+			int nHeight, double nFees) {
+		if (nHeight == 0)
 			return Utils.toNanoCoins(0, 0);
 
-		if (height == 1)
+		if (nHeight == 1)
 			return Utils.toNanoCoins(2713250000L, 0);
 
-		if (height > 1)
-			return Utils.toNanoCoins(0, 10000);
+		BigInteger nSubsidy = Utils.toNanoCoins(1, 0).shiftRight(
+				nHeight / subsidyDecreaseBlockCount);
 
-		int COIN = 1;
-		BigInteger nSubsidy = Utils.toNanoCoins(0, 0);
-		/*
-		 * Total Coins: 42 Million 1st 5 Months, 21 Million Coins will be
-		 * generated Every 21,000 Blocks (1 Month) the reward steps down from
-		 * 500, 250, 125, 75, 50.
-		 * 
-		 * Through the next few decades the Remaining 21 Million will be
-		 * generated Every 420,000 Blocks (2 Years), The reward starts at 25 and
-		 * is Halved each period 10.5 Million come from first 2 Years of 420K
-		 * Blocks
-		 */
-		int BlockCountA = 21000;
-		int BlockCountB = 420000;
-		if (height >= BlockCountA * 5) {
-			nSubsidy = Utils.toNanoCoins(25 * COIN, 0);
-			nSubsidy = nSubsidy
-					.shiftRight(((height - (BlockCountA * 5)) / (BlockCountB))); // Subsidy
-																					// is
-																					// cut
-																					// in
-																					// half
-																					// every
-																					// 420000
-																					// blocks
-		} else if (height >= BlockCountA * 4) {
-			nSubsidy = Utils.toNanoCoins(50 * COIN, 0);
-		} else if (height >= BlockCountA * 3) {
-			nSubsidy = Utils.toNanoCoins(75 * COIN, 0);
-		} else if (height >= BlockCountA * 2) {
-			nSubsidy = Utils.toNanoCoins(125 * COIN, 0);
-		} else if (height >= BlockCountA) {
-			nSubsidy = Utils.toNanoCoins(250 * COIN, 0);
-		} else {
-			nSubsidy = Utils.toNanoCoins(500, 0);
-		}
-
+		nSubsidy.add(Utils.toNanoCoins(0, (int) (nFees * 100000000)));
 		return nSubsidy;
 	}
 
