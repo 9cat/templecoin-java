@@ -121,7 +121,7 @@ public class CoinDefinition {
 																// MAX_MONEY
 
 	public static final BigInteger DEFAULT_MIN_TX_FEE = BigInteger
-			.valueOf(10000); // MIN_TX_FEE
+			.valueOf(100000); // MIN_TX_FEE
 	public static final BigInteger DUST_LIMIT = Utils.CENT; // main.h
 															// CTransaction::GetMinFee
 															// 0.01 coins

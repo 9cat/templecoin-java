@@ -16,16 +16,23 @@
 
 package com.google.bitcoin.examples;
 
-import com.google.bitcoin.core.*;
-import com.google.bitcoin.kits.WalletAppKit;
-import com.google.bitcoin.params.TestNet3Params;
-import com.google.bitcoin.protocols.channels.*;
-import com.google.bitcoin.utils.BriefLogFormatter;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.math.BigInteger;
 import java.net.SocketAddress;
+
+import org.slf4j.LoggerFactory;
+
+import com.google.bitcoin.core.NetworkParameters;
+import com.google.bitcoin.core.Sha256Hash;
+import com.google.bitcoin.core.VerificationException;
+import com.google.bitcoin.kits.WalletAppKit;
+import com.google.bitcoin.params.MainNetParams;
+import com.google.bitcoin.protocols.channels.PaymentChannelCloseException;
+import com.google.bitcoin.protocols.channels.PaymentChannelServerListener;
+import com.google.bitcoin.protocols.channels.PaymentChannelServerState;
+import com.google.bitcoin.protocols.channels.ServerConnectionEventHandler;
+import com.google.bitcoin.protocols.channels.StoredPaymentChannelServerStates;
+import com.google.bitcoin.utils.BriefLogFormatter;
 
 /**
  * Simple server that listens on port 4242 for incoming payment channels.
@@ -42,7 +49,7 @@ public class ExamplePaymentChannelServer implements PaymentChannelServerListener
     }
 
     public void run() throws Exception {
-        NetworkParameters params = TestNet3Params.get();
+        NetworkParameters params = MainNetParams.get();
 
         // Bring up all the objects we need, create/load a wallet, sync the chain, etc. We override WalletAppKit so we
         // can customize it by adding the extension objects - we have to do this before the wallet file is loaded so

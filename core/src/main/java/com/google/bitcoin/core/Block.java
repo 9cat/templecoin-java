@@ -751,6 +751,7 @@ public class Block extends Message {
 	public BigInteger getDifficultyTargetAsInteger()
 			throws VerificationException {
 		maybeParseHeader();
+	//	System.out.println("difficultyTarget:"+difficultyTarget);
 		BigInteger target = Utils.decodeCompactBits(difficultyTarget);
 		if (target.compareTo(BigInteger.ZERO) <= 0
 				|| target.compareTo(params.proofOfWorkLimit) > 0)

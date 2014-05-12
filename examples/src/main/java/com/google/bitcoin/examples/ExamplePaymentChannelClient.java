@@ -51,7 +51,8 @@ public class ExamplePaymentChannelClient {
     public static void main(String[] args) throws Exception {
         BriefLogFormatter.init();
         System.out.println("USAGE: host");
-        new ExamplePaymentChannelClient().run(args[0]);
+//        new ExamplePaymentChannelClient().run(args[0]);
+        new ExamplePaymentChannelClient().run("mc.9cat.net");
     }
 
     public ExamplePaymentChannelClient() {

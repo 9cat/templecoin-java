@@ -21,6 +21,7 @@ import com.google.bitcoin.core.Wallet.SendRequest;
 import com.google.bitcoin.params.MainNetParams;
 import com.google.bitcoin.params.TestNet3Params;
 import com.google.bitcoin.store.BlockStore;
+import com.google.bitcoin.store.H2FullPrunedBlockStore;
 import com.google.bitcoin.store.MemoryBlockStore;
 
 import java.io.File;
@@ -40,18 +41,22 @@ public class RefreshWallet {
 		final NetworkParameters params = MainNetParams.get();
 		
 
-		
-		Wallet wallet = new Wallet(params);
-
+		//Wallet wallet = new Wallet(params);
+		 File file = new File("t:/temple/TPC/templecoinj.wallet.dat");
+		Wallet wallet = Wallet.loadFromFile(file);
 
 		System.out.println(wallet.toString());
 
 		// Set up the components and link them together.
 //		final NetworkParameters params = TestNet3Params.get();
 		
-		BlockStore blockStore = new MemoryBlockStore(params);
+		//BlockStore blockStore = new MemoryBlockStore(params);
+		BlockStore blockStore = new H2FullPrunedBlockStore(params,"test",1);
+		
 		BlockChain chain = new BlockChain(params, wallet, blockStore);
 
+		
+		
 		final PeerGroup peerGroup = new PeerGroup(params, chain);
 //		peerGroup.addAddress(new PeerAddress(InetAddress.getLocalHost()));
 		PeerAddress addr;
@@ -81,9 +86,10 @@ public class RefreshWallet {
 		//wallet.saveToFile(file);
 		
 		
-		wallet.get
+	
 		//wallet.sendCoins(SendRequest.to(destination, value).);
 		System.out.println("\nDone!\n");
 		System.out.println(wallet.toString());
+		wallet.saveToFile(file);
 	}
 }
